@@ -1,13 +1,13 @@
 import config from "../../dbconfig";
 import sql from 'mssql'
-import Pelicula from "../models/pelicula";
+import Personaje from "../models/personaje";
 
 class PersonajeService {
     getAll = async () => {
         try {
             let pool   = await sql.connect(config);
             let result = await pool.request()
-                                .query('SELECT * FROM personajes');
+                                .query('SELECT * FROM Personajes');
             return result.recordsets
         } catch (error) {
             console.log(error);
@@ -38,8 +38,8 @@ class PersonajeService {
                                     .input("Edad", sql.Date, personaje.Edad)
                                     .input("Peso", sql.Int, personaje.Peso)
                                     .input("Historia", sql.VarChar, personaje.Personaje)
-                                    .input("Pelicula", sql.Int, personaje.pelicula)
-                                    .query("INSERT INTO Pelicula (Imagen, Nombre, Edad, Peso, Historia, Pelicula) VALUES (@Imagen, @Nombre, @Edad, @Peso, @Historia, @Pelicula))");
+                                    .input("personaje", sql.Int, personaje.personaje)
+                                    .query("INSERT INTO personaje (Imagen, Nombre, Edad, Peso, Historia, personaje) VALUES (@Imagen, @Nombre, @Edad, @Peso, @Historia, @personaje))");
     return result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -50,12 +50,12 @@ class PersonajeService {
         try {
             let pool   = await sql.connect(config);
             let result = await pool.request()
-            .input("Imagen", sql.VarChar, pelicula.Imagen)
-            .input("Titulo", sql.VarChar, pelicula.Titulo)
-            .input("FechaDeCreacion", sql.Date, pelicula.FechaDeCreacion)
-            .input("Calificacion", sql.Int, pelicula.Calificacion)
-            .input("Personaje", sql.VarChar, pelicula.Personaje)
-            .query("INSERT INTO Pelicula (Imagen, Titulo, FechaDeCreacion, Calificacion, Personaje) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion, @Personaje))");
+            .input("Imagen", sql.VarChar, personaje.Imagen)
+            .input("Titulo", sql.VarChar, personaje.Titulo)
+            .input("FechaDeCreacion", sql.Date, personaje.FechaDeCreacion)
+            .input("Calificacion", sql.Int, personaje.Calificacion)
+            .input("Personaje", sql.VarChar, personaje.Personaje)
+            .query("INSERT INTO Personaje (Imagen, Titulo, FechaDeCreacion, Calificacion, Personaje) VALUES (@Imagen, @Titulo, @FechaDeCreacion, @Calificacion, @Personaje))");
                 rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -64,12 +64,12 @@ class PersonajeService {
     }
     deleteById = async (id) => {
         let retunrEntity = 0;
-        console.log('Estoy en: PeliculaService.deleteById(id)')
+        console.log('Estoy en: personajeService.deleteById(id)')
     try {
         let pool = await sql.connect(config);
         let result = await pool.request()
                             .input('Id', sql.Int, id)
-                            .query('DELETE FROM Peliculas WHERE id = @Id');
+                            .query('DELETE FROM personajes WHERE id = @Id');
         retunrEntity = result.recordsets;              
         console.log(result);      
     } catch (error) {
@@ -78,4 +78,4 @@ class PersonajeService {
     return retunrEntity;
     }
 }
-export default PeliculaService;
+export default PersonajeService;
